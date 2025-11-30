@@ -1,0 +1,29 @@
+# Build SoulFire in Linux container
+FROM --platform=linux/amd64 gradle:8-jdk21
+
+WORKDIR /build
+
+# Copy Gradle wrapper and build files
+COPY gradlew ./
+COPY gradle/ ./gradle/
+COPY build.gradle.kts ./
+COPY buildSrc/ ./buildSrc/
+COPY settings.gradle.kts ./
+COPY gradle.properties ./
+COPY gradle/ ./gradle/
+
+# Copy all source modules
+COPY proto/ ./proto/
+COPY shared/ ./shared/
+COPY mod/ ./mod/
+COPY launcher/ ./launcher/
+COPY j8-launcher/ ./j8-launcher/
+COPY dedicated-launcher/ ./dedicated-launcher/
+COPY client-launcher/ ./client-launcher/
+COPY build-data/ ./build-data/
+ENV JAVA_OPTS="-Xmx4g -XX:MaxMetaspaceSize=1g"
+# Build the dedicated launcher uberJar
+RUN ./gradlew :dedicated-launcher:uberJar --no-daemon
+
+# Output will be in dedicated-launcher/build/libs/SoulFireDedicated-*.jar
+

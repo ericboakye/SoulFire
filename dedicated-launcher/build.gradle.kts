@@ -131,3 +131,12 @@ tasks {
     dependsOn(uberJar)
   }
 }
+
+publishing {
+  publications {
+    getByName<MavenPublication>("mavenJava") {
+      // Override to publish the uberJar instead of the regular jar component
+      setArtifacts(listOf(tasks.named("uberJar").get()))
+    }
+  }
+}

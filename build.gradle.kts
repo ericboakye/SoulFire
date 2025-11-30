@@ -86,6 +86,7 @@ allprojects {
       content {
         includeGroup("net.minecraft")
         includeGroup("com.mojang")
+        includeGroup("org.lwjgl")
       }
     }
     maven("https://nexus.lucko.me/repository/hosted/") {
